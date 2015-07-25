@@ -1,0 +1,36 @@
+id: wp_posts
+label: WP Posts to Article nodes.
+source:
+  plugin: wp_post
+  table_prefix: bbwa_
+  constants:
+    type: article
+    uid: 1
+    promote: true
+    filter_format: filtered_html
+process:
+  nid: ID
+  type: 'constants/type'
+  uid: 'constants/uid'
+  promote: 'constants/promote'
+
+  status:
+    plugin: static_map
+    source: post_status
+    default_value: 0
+    map:
+      publish: 1
+      draft: 0
+
+  field_tags: tags
+
+  title: post_title
+  created: post_date
+  changed: post_modified
+  body/format: 'constants/filter_format'
+  body/value: post_content
+destination:
+  plugin: entity:node
+
+migration_dependencies:
+  - wp_terms

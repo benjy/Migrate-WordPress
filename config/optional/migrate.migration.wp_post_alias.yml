@@ -1,0 +1,37 @@
+id: wp_post_alias
+label: WordPress post url aliases.
+source:
+  plugin: wp_post
+  table_prefix: bbwa_
+  constants:
+    prefix: /node
+    language: en
+    slash: /
+process:
+  source:
+    plugin: concat
+    delimiter: /
+    source:
+      - 'constants/prefix'
+      - ID # ID was preserved to nid
+  alias:
+    -
+      plugin: skip_on_empty
+      method: row
+      source: post_name
+    -
+      plugin: concat
+      delimiter:
+      source:
+        - 'constants/slash'
+        - post_name
+    -
+      plugin: extract
+      index:
+        - 0
+
+  langcode: 'constants/language'
+destination:
+  plugin: url_alias
+migration_dependencies:
+  - wp_posts

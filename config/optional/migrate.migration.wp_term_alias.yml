@@ -1,0 +1,36 @@
+id: wp_term_alias
+label: WordPress term url aliases.
+source:
+  plugin: wp_term
+  table_prefix: bbwa_
+  constants:
+    prefix: /taxonomy/term
+    language: en
+    slash: /
+process:
+  tid:
+    plugin: migration
+    migration: wp_terms
+    source: term_id
+  source:
+    plugin: concat
+    delimiter: /
+    source:
+      - 'constants/prefix'
+      - @tid
+  alias:
+    -
+      plugin: skip_on_empty
+      method: row
+      source: slug
+    -
+      plugin: concat
+      delimiter:
+      source:
+        - 'constants/slash'
+        - slug
+  langcode: 'constants/language'
+destination:
+  plugin: url_alias
+migration_dependencies:
+  - wp_terms

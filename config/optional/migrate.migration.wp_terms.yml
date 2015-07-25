@@ -1,0 +1,13 @@
+id: wp_terms
+label: WordPress category terms.
+source:
+  plugin: wp_term
+  table_prefix: bbwa_
+  constants:
+    vid: tags
+process:
+  tid: term_id
+  vid: 'constants/vid'
+  name: name
+destination:
+  plugin: entity:taxonomy_term
